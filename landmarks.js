@@ -1,6 +1,7 @@
-var express = require('express')
-  , mongodb = require('mongodb')
-  , url = require('url');
+
+const express = require('express');
+const { MongoClient } = require('mongodb');
+const url = require('url');
 
 
 //Landmark object that will get inserted into landmarks collection
@@ -25,6 +26,8 @@ app.get('/', function(req, res){
 
 				res.write("<html><head><style>"+style+"</style></head><body>");
 
+				res.write('<a href="/new">New Post</a>')
+
 				for( i in docs ){
 						res.write('<div class="container"><div class="title"><a href="'+docs[i].url+'">'+
 											docs[i].title+'</a></div><div class="comment">'+
@@ -43,6 +46,7 @@ app.get('/new', function(req, res){
 				'<div><label>comment:</label><input type="text" name="comment"/></div>'+
 				'<div><input type="submit" value="Create Landmark"/></div></form>';
 
+		res.header("Content-Type", "text/html");
 		res.write('<!DOCTYPE html5><html><body>'+form+'</body></html>');
 		res.end();
 
@@ -73,22 +77,29 @@ app.post('/new', function(req, res){
 
 
 //connect to mongoDB and listen on port 8000
-var mserv = new mongodb.Server('127.0.0.1', 27017);
+const mongoConnectionString = 'mongodb://localhost:27017'
+const mongoClient = new MongoClient(mongoConnectionString);
+// Database Name
+const dbName = 'landmarksDB';
 
-new mongodb.Db('landmarksjs', mserv).open(function(err, client){
-		if( err ) throw err;
+async function main() {
+  // Use connect method to connect to the server
+  await mongoClient.connect();
+  console.log('Connected successfully to server');
+  const db = mongoClient.db(dbName);
 
-		app.landmarks = client.collection('landmarks');
+  // the following code examples can be pasted here...
+	app.landmarks = db.collection('landmarks');
 
-		app.listen(8000, function(){
-				console.log('* listening on :3000');
-		});
+	app.listen(8000, function(){
+			console.log('* listening on :3000');
+	});
 
-		console.log('* connected to mongodb');
-});
+	console.log('* connected to mongodb');
+  return 'done.';
+}
 
 
-
-
+main();
 
 
