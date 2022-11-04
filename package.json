@@ -6,11 +6,12 @@
   "name": "zinkem-landmarks",
   "description": "landmarks =========",
   "version": "1.0.0",
-  "main": "landmarks.js",
+  "main": "lib/landmarks.js",
   "devDependencies": {
     "mocha": "^10.1.0"
   },
   "scripts": {
+    "start": "node lib/landmarks.js",
     "test": "mocha"
   },
   "repository": {
