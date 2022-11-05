@@ -1,0 +1,20 @@
+body {
+  background: #ccc;
+}
+
+.container {
+  padding: 8px;
+  background: #aaa;
+  border-radius: 5;
+  margin: 5px;
+}
+
+.title {
+  padding: 5px;
+  background: #aaf;
+  border-radius: 5;
+}
+
+.comment {
+  color: #ffa;
+}
